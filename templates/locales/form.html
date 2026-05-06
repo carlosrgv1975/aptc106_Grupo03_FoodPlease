@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>🏪 {% if local %}Editar Local{% else %}Nuevo Local{% endif %}</h2>
+<div class="card shadow-sm mt-3">
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" name="nombre" class="form-control" required
+                       value="{{ local.nombre if local else '' }}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Categoría</label>
+                <select name="categoria" class="form-select" required>
+                    {% for cat in ['Comida Rápida','Pizza','Sushi','Vegano','Bebidas','Otro'] %}
+                    <option value="{{ cat }}"
+                        {% if local and local.categoria == cat %}selected{% endif %}>
+                        {{ cat }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Dirección</label>
+                <input type="text" name="direccion" class="form-control" required
+                       value="{{ local.direccion if local else '' }}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Teléfono</label>
+                <input type="text" name="telefono" class="form-control" required
+                       value="{{ local.telefono if local else '' }}">
+            </div>
+            <button type="submit" class="btn btn-danger">Guardar</button>
+            <a href="/locales" class="btn btn-secondary ms-2">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

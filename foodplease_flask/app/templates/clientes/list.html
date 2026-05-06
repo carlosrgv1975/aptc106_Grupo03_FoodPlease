@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Clientes{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Clientes</h1>
+    <a href="{{ url_for('clientes.create_cliente') }}" class="btn btn-primary">Nuevo cliente</a>
+</div>
+<table class="table table-striped align-middle">
+    <thead><tr><th>ID</th><th>Nombre</th><th>Teléfono</th><th>Dirección</th><th class="text-end">Acciones</th></tr></thead>
+    <tbody>
+        {% for cliente in clientes %}
+        <tr>
+            <td>{{ cliente.id }}</td>
+            <td>{{ cliente.nombre }}</td>
+            <td>{{ cliente.telefono }}</td>
+            <td>{{ cliente.direccion }}</td>
+            <td class="text-end d-flex gap-2 justify-content-end">
+                <a href="{{ url_for('clientes.edit_cliente', cliente_id=cliente.id) }}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                <form method="post" action="{{ url_for('clientes.delete_cliente', cliente_id=cliente.id) }}">
+                    <button class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar cliente?')">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="text-center text-muted">Sin registros.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

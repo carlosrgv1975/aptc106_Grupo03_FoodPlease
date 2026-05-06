@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>📦 {% if pedido %}Editar Pedido{% else %}Nuevo Pedido{% endif %}</h2>
+<div class="card shadow-sm mt-3">
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">Cliente</label>
+                <select name="cliente_id" class="form-select" required>
+                    {% for c in clientes %}
+                    <option value="{{ c.id }}"
+                        {% if pedido and pedido.cliente_id == c.id %}selected{% endif %}>
+                        {{ c.nombre }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Local</label>
+                <select name="local_id" class="form-select" required>
+                    {% for l in locales %}
+                    <option value="{{ l.id }}"
+                        {% if pedido and pedido.local_id == l.id %}selected{% endif %}>
+                        {{ l.nombre }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Repartidor (opcional)</label>
+                <select name="repartidor_id" class="form-select">

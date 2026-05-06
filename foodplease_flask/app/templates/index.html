@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | FoodPlease{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">Dashboard operativo</h1>
+        <p class="text-muted mb-0">Panel web de administración inspirado en la propuesta del caso FoodPlease.</p>
+    </div>
+    <a href="{{ url_for('pedidos.create_pedido') }}" class="btn btn-primary">Nuevo pedido</a>
+</div>
+
+<div class="row g-3 mb-4">
+    {% for label, value in [('Clientes', metrics.clientes), ('Locales', metrics.locales), ('Repartidores', metrics.repartidores), ('Pedidos', metrics.pedidos)] %}
+    <div class="col-md-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-muted small">{{ label }}</div>
+                <div class="display-6 fw-bold">{{ value }}</div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4"><div class="card border-warning"><div class="card-body"><strong>Pendientes:</strong> {{ metrics.pendientes }}</div></div></div>
+    <div class="col-md-4"><div class="card border-info"><div class="card-body"><strong>En ruta:</strong> {{ metrics.en_ruta }}</div></div></div>
+    <div class="col-md-4"><div class="card border-success"><div class="card-body"><strong>Entregados:</strong> {{ metrics.entregados }}</div></div></div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white">
+        <h2 class="h5 mb-0">Últimos pedidos</h2>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Descripción</th>
+                    <th>Cliente</th>
+                    <th>Local</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in ultimos_pedidos %}
+                <tr>
+                    <td>{{ pedido.id }}</td>
+                    <td>{{ pedido.descripcion }}</td>
+                    <td>{{ pedido.cliente.nombre }}</td>
+                    <td>{{ pedido.local.nombre }}</td>
+                    <td><span class="badge text-bg-secondary">{{ pedido.estado }}</span></td>
+                    <td>${{ '{:,.0f}'.format(pedido.total).replace(',', '.') }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6" class="text-center text-muted py-3">No hay pedidos registrados.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
