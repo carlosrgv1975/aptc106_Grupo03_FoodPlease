@@ -1,0 +1,92 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="warning">
+    <ion-title>
+      Mis pedidos
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Mis pedidos</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Estado de carga -->
+  <div *ngIf="cargando" class="ion-padding ion-text-center">
+    <ion-spinner name="crescent" color="warning"></ion-spinner>
+    <p>Cargando pedidos...</p>
+  </div>
+
+  <!-- Estado de error -->
+  <ion-card *ngIf="error" color="danger">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="alert-circle"></ion-icon>
+        Error de conexión
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{ error }}
+      <ion-button expand="block" color="light" (click)="cargarPedidos()" class="ion-margin-top">
+        Reintentar
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Estado vacío -->
+  <div *ngIf="!cargando && !error && pedidos.length === 0" class="ion-padding ion-text-center">
+    <ion-icon name="receipt-outline" size="large" color="medium"></ion-icon>
+    <h3>No tienes pedidos aún</h3>
+    <p>Cuando hagas tu primer pedido, aparecerá aquí.</p>
+  </div>
+
+  <!-- Lista de pedidos -->
+  <ion-list *ngIf="!cargando && !error">
+    <ion-card *ngFor="let pedido of pedidos" class="pedido-card">
+      <ion-card-header>
+        <div class="pedido-header">
+          <div>
+            <ion-card-subtitle>Pedido #{{ pedido.id }}</ion-card-subtitle>
+            <ion-card-title>{{ pedido.descripcion }}</ion-card-title>
+          </div>
+          <ion-badge [color]="colorEstado(pedido.estado)">
+            <ion-icon [name]="iconoEstado(pedido.estado)"></ion-icon>
+            {{ pedido.estado }}
+          </ion-badge>
+        </div>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="info-row" *ngIf="pedido.local">
+          <ion-icon name="storefront-outline"></ion-icon>
+          <span>{{ pedido.local.nombre }} ({{ pedido.local.rubro }})</span>
+        </div>
+        <div class="info-row" *ngIf="pedido.cliente">
+          <ion-icon name="person-outline"></ion-icon>
+          <span>{{ pedido.cliente.nombre }}</span>
+        </div>
+        <div class="info-row" *ngIf="pedido.repartidor">
+          <ion-icon name="bicycle-outline"></ion-icon>
+          <span>{{ pedido.repartidor.nombre }} · {{ pedido.repartidor.vehiculo }}</span>
+        </div>
+        <div class="info-row">
+          <ion-icon name="location-outline"></ion-icon>
+          <span>{{ pedido.direccion_entrega }}</span>
+        </div>
+        <div class="total-row">
+          <ion-icon name="cash-outline"></ion-icon>
+          <span class="total-amount">${{ pedido.total | number:'1.0-0' }}</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <!-- Footer info -->
+  <div class="ion-padding ion-text-center" *ngIf="!cargando && !error && pedidos.length > 0">
+    <p class="footer-info">
+      <ion-icon name="checkmark-circle" color="success"></ion-icon>
+      {{ pedidos.length }} pedidos · Sincronizado con la API
+    </p>
+  </div>
+</ion-content>

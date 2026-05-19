@@ -1,0 +1,58 @@
+.pedido-card {
+  margin: 12px;
+  border-radius: 16px;
+}
+
+.pedido-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.pedido-header ion-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  color: var(--ion-color-medium-shade);
+  font-size: 0.9rem;
+}
+
+.info-row ion-icon {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+
+.total-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ion-color-light-shade);
+}
+
+.total-amount {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ion-color-warning-shade);
+}
+
+.footer-info {
+  font-size: 0.85rem;
+  color: var(--ion-color-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}

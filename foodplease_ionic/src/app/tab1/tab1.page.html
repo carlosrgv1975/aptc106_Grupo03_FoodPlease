@@ -1,0 +1,74 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="warning">
+    <ion-title>
+      FoodPlease
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Restaurantes cercanos</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Barra de búsqueda decorativa (sin lógica todavía) -->
+  <div class="ion-padding-horizontal ion-padding-top">
+    <ion-searchbar placeholder="Buscar restaurantes o platos..." mode="ios"></ion-searchbar>
+  </div>
+
+  <!-- Estado de carga -->
+  <div *ngIf="cargando" class="ion-padding ion-text-center">
+    <ion-spinner name="crescent" color="warning"></ion-spinner>
+    <p>Cargando restaurantes...</p>
+  </div>
+
+  <!-- Estado de error -->
+  <ion-card *ngIf="error" color="danger">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="alert-circle"></ion-icon>
+        Error de conexión
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{ error }}
+      <ion-button expand="block" color="light" (click)="cargarLocales()" class="ion-margin-top">
+        Reintentar
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Lista de restaurantes -->
+  <ion-list *ngIf="!cargando && !error">
+    <ion-card *ngFor="let local of locales" class="restaurant-card">
+      <ion-card-header>
+        <div class="restaurant-header">
+          <ion-icon [name]="iconoRubro(local.rubro)" color="warning" size="large"></ion-icon>
+          <div>
+            <ion-card-title>{{ local.nombre }}</ion-card-title>
+            <ion-card-subtitle>{{ local.rubro }}</ion-card-subtitle>
+          </div>
+        </div>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          <ion-icon name="location-outline"></ion-icon>
+          {{ local.direccion }}
+        </p>
+        <ion-button expand="block" color="warning" fill="outline" class="ion-margin-top">
+          Ver carta
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <!-- Footer info -->
+  <div class="ion-padding ion-text-center" *ngIf="!cargando && !error && locales.length > 0">
+    <p class="footer-info">
+      <ion-icon name="checkmark-circle" color="success"></ion-icon>
+      {{ locales.length }} restaurantes disponibles · Datos en tiempo real desde la API
+    </p>
+  </div>
+</ion-content>
