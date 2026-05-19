@@ -1,9 +1,12 @@
-// Configuración para producción (despliegue Cloud en Render).
-// La URL se actualizará cuando el backend Flask esté desplegado.
+// Configuración para producción.
+// Apunta al backend Flask desplegado en Render Cloud.
+//
+// URL del backend: https://foodplease-api-grupo03.onrender.com
+// (servicio web gratuito de Render, despliegue automático desde GitHub).
 
 export const environment = {
   production: true,
-  apiUrl: 'https://foodplease-api.onrender.com/api/v1',  // pendiente de actualizar tras deploy
+  apiUrl: 'https://foodplease-api-grupo03.onrender.com/api/v1',
   appName: 'FoodPlease',
   appVersion: '1.0.0',
 };
