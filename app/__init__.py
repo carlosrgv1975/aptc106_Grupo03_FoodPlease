@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 
 from config import Config
 from .extensions import db
@@ -8,6 +9,7 @@ from .routes.clientes import clientes_bp
 from .routes.locales import locales_bp
 from .routes.repartidores import repartidores_bp
 from .routes.pedidos import pedidos_bp
+from .routes.api import api_bp
 
 
 def seed_data():
@@ -52,14 +54,22 @@ def create_app():
 
     db.init_app(app)
 
+    # CORS abierto para que la app móvil Ionic (en otro origen) pueda consumir la API.
+    # En producción se restringirá a los dominios del despliegue móvil.
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
+
     with app.app_context():
         db.create_all()
         seed_data()
 
+    # Blueprints web (server-side rendering con Jinja2)
     app.register_blueprint(main_bp)
     app.register_blueprint(clientes_bp)
     app.register_blueprint(locales_bp)
     app.register_blueprint(repartidores_bp)
     app.register_blueprint(pedidos_bp)
+
+    # Blueprint API REST (consumido por la app móvil Ionic + Angular)
+    app.register_blueprint(api_bp)
 
     return app
